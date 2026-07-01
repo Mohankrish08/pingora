@@ -5,7 +5,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
-        case_sensitive=True,
         extra="ignore",
     )
 
@@ -25,7 +24,9 @@ class Settings(BaseSettings):
     rsa_private_key_path: str = "./keys/private.pem"
     rsa_public_key_path: str = "./keys/public.pem"
 
-    aes_secret_key: str = "redis://localhost:6379/0"
+    aes_secret_key: str
+
+    redis_url: str = "redis://localhost:6379/0"
 
     csrf_secret_key: str
     csrf_token_expire_minutes: int = 60

@@ -40,6 +40,11 @@ async def lifespan(app: FastAPI):
 
     print(f"{settings.app_env} started [{settings.app_env}]")
 
+    yield
+
+    print("Redis connection closed")
+    await redis.close()
+
 
 def create_app() -> FastAPI:
     settings = get_settings()

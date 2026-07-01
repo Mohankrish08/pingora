@@ -1,6 +1,6 @@
 from functools import lru_cache
 import redis.asyncio as redis
-from common.config import get_settings
+from common.config.settings import get_settings
 
 @lru_cache()
 def get_redis_client():

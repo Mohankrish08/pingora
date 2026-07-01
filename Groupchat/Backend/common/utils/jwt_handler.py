@@ -1,7 +1,7 @@
 import secrets 
 import hashlib
-from datetime import datetime, timedelta, timezone, timedela
-from jose import jwt, JwtError
+from datetime import datetime, timedelta, timezone
+from jose import jwt, JWTError
 from common.config.settings import get_settings
 from common.utils.crypto import encryp_payload, decrypt_payload
 
@@ -87,11 +87,11 @@ def decode_token(token: str) -> dict:
             algorithms=[settings.jwt_algorithm]
         )
         return decrypt_payload(outer["enc"])
-    except JwtError:
+    except JWTError:
         raise
     except Exception as e:
-        raise JwtError(f"Token decoding failed: {e}") from e
-    
+        raise JWTError(f"Token decoding failed: {e}") from e
+
 def decode_refresh_token(token: str) -> dict:
     try:
         settings = get_settings()

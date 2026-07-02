@@ -24,6 +24,6 @@ def validate_csrf_token(token: str, unique_session_id: str) -> bool:
             return False
         if payload.get("exp", 0) < now:
             return False
-        True
+        return True
     except Exception as e:
         return False

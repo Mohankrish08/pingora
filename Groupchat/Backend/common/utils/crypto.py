@@ -35,7 +35,7 @@ def encryp_payload(payload: dict) -> str:
     """
     _load_key()
      
-    raw = json.dumps(payload, seperators=(":", ",")).encode()
+    raw = json.dumps(payload, seperators=(",", ":")).encode()
 
     # AES-GCM encrypt
     aes_key = os.urandom(AES_KEY_SIZE)
@@ -68,7 +68,7 @@ def decrypt_payload(token: str) -> dict:
         envelope = base64.urlsafe_b64decode(token.encode())
         enc_aes_key = envelope[:RSA_KEY_SIZE]
         nonce = envelope[RSA_KEY_SIZE:RSA_KEY_SIZE + AES_NONCE_SIZE]
-        ciphertext = envelope[RSA_KEY_SIZE + AES_NONCE_SIZE]
+        ciphertext = envelope[RSA_KEY_SIZE + AES_NONCE_SIZE:]
 
         # Decrypt AES key
         aes_key = _rsa_private_key.decrypt(

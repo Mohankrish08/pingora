@@ -42,7 +42,7 @@ def create_acces_token(
         "exp": int(exp.timestamp())
     }
 
-    token = jwt.encode(outer_claims, settings.jwt_secret_key, algorithm=settings.allowed_origins)
+    token = jwt.encode(outer_claims, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
     return token, jti
 
 

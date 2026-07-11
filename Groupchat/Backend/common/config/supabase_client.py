@@ -1,6 +1,6 @@
 from functools import lru_cache
 from supabase import create_client, Client
-from common.config import get_settings
+from common.config.settings import get_settings
 
 @lru_cache()
 def get_supabase_client():

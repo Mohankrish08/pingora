@@ -14,6 +14,8 @@ from common.middleware.auth_middleware import (
     RateLimitMiddleware
 )
 
+from authorization.routes.auth_routes import router as auth_router
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     settings = get_settings()
@@ -70,6 +72,8 @@ def create_app() -> FastAPI:
     app.add_middleware(JWTAuthMiddleware)
     app.add_middleware(CSRFMiddleware)
     app.add_middleware(RateLimitMiddleware)
+
+    app.include_router(auth_router, prefix="/auth")
 
     
     @app.get("/health", tags=["Health"])

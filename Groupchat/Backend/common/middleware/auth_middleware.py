@@ -19,7 +19,7 @@ PUBLIC_ROUTES = {
     "/health",
     "/docs",
     "/openapi.json",
-    "/favicon.ico",
+    "/pingora-icon",
     "/redoc"
 }
 

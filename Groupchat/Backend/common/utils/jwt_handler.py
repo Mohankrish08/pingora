@@ -34,13 +34,18 @@ def create_acces_token(
         "type": "access"
     }
 
-    encrypted_claims = encryp_payload(inner_claims)
-
-    outer_claims = {
-        "enc": encrypted_claims,
-        "jti": jti,
-        "exp": int(exp.timestamp())
-    }
+    if settings.encrpt_jwt_payload: 
+        outer_claims = {
+            "enc": encryp_payload(inner_claims),
+            "jti": jti,
+            "exp": int(exp.timestamp())
+        }
+    else:
+        outer_claims = {
+            "claims": inner_claims,
+            "jti": jti,
+            "exp": int(exp.timestamp())
+        }
 
     token = jwt.encode(outer_claims, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
     return token, jti
@@ -66,12 +71,18 @@ def create_refresh_token(
         "jti": jti
     }
 
-    encrypted_claims = encryp_payload(inner_claims)
-    outer_claims = {
-        "enc": encrypted_claims,
-        "jti": jti,
-        "exp": int(exp.timestamp())
-    }
+    if settings.encrypt_jwt_payload:
+        outer_claims = {
+            "enc": encryp_payload(inner_claims),
+            "jti": jti,
+            "exp": int(exp.timestamp())
+        }
+    else: 
+        outer_claims = {
+            "claims": inner_claims,
+            "jti": jti,
+            "exp": int(exp.timestamp())
+        }
 
     token = jwt.encode(outer_claims, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
     token_hash = hashlib.sha256(token.encode()).hexdigest()
@@ -86,7 +97,11 @@ def decode_token(token: str) -> dict:
             settings.jwt_secret_key,
             algorithms=[settings.jwt_algorithm]
         )
-        return decrypt_payload(outer["enc"])
+        if "enc" in outer:
+            return decrypt_payload(outer["enc"])
+        if "claims" in outer:
+            return outer["claims"]
+        return JWTError("Token is missing claims")
     except JWTError:
         raise
     except Exception as e:
@@ -101,9 +116,13 @@ def decode_refresh_token(token: str) -> dict:
             algorithms=[settings.jwt_algorithm],
             options={"verify_exp": True}
         )
-        return decrypt_payload(outer["enc"])
+        if "enc" in outer:
+            return decrypt_payload(outer["enc"])
+        if "claims" in outer:
+            return outer["claims"]
+        return JWTError("Token is missing claims")
     except Exception as e:
-        return None
-    
+        raise JWTError(f"Token decoding failed: {e}") from e
+
 def hash_refresh_token(token: str) -> str:
     return hashlib.sha256(token.encode()).hexdigest()

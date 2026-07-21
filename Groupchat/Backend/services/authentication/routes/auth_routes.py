@@ -5,8 +5,9 @@ from common.security.password import hash_password, verify_password
 from common.utils.otp import generate_totp_secret, get_totp_provisioning_uri, create_sms_otp
 from common.utils.crypto import aes_encrypt
 
-from authorization.schema.auth_schemas import RegisterRequest, RegisterResponse
-from authorization.repositories.user_repository import find_by_email_or_phone, create_user
+
+from schema.auth_schemas import RegisterRequest, RegisterResponse
+from repositories.user_repository import find_by_email_or_phone, create_user
 
 router = APIRouter(tags=["auth"])
 

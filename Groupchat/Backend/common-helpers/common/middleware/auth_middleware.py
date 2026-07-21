@@ -119,7 +119,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         pipe.zremrangebyscore(key, 0, now - window)
         pipe.zcard(key)
         pipe.expire(key, window)
-        results = await pipe.excute()
+        results = await pipe.execute()
         count = results[2]
 
         if count > limit:
@@ -127,7 +127,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
             return JSONResponse(
                 {"detail": f"Too many requests. Retry after {retry_after}s",},
                 status_code=429,
-                headers={"Retry_after": str(retry_after)},
+                headers={"Retry_After": str(retry_after)},
             )
         return await call_next(request)
 

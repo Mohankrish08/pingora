@@ -1,6 +1,7 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RegisterService } from './register.service';
 
 @Component({
   selector: 'app-register',
@@ -12,11 +13,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 export class RegisterComponent {
   showPassword = false;
   registerForm: FormGroup;
+  registerService = inject(RegisterService);
 
   constructor(private fb: FormBuilder) {
     this.registerForm = this.fb.group({
-      fullName: ['', Validators.required],
+      display_name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      phone_number: ['', [Validators.required, Validators.minLength(10)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
@@ -64,7 +67,13 @@ export class RegisterComponent {
       this.registerForm.markAllAsTouched();
       return;
     }
+    const data = this.registerForm.value;
     console.log(this.registerForm.value);
+    this.registerService.register(data).subscribe({
+      next: (response: any) => {
+        console.log("RESP: ", response);
+      }
+    })
     // wire up to your auth service / navigate to profile-setup step here
   }
 }

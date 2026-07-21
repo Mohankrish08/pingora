@@ -13,7 +13,7 @@ interface LoginResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    private baseUrl = environment.apiUrl;
+    private baseUrl = environment.authAPI;
 
     constructor(
         private http: HttpClient,

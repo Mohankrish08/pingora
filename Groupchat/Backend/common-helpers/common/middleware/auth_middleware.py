@@ -32,6 +32,12 @@ class JWTAuthMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         path = request.url.path
 
+        body = await request.body()
+        print(body.decode("utf-8"))
+
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         if any(path.startswith(pub) for pub in PUBLIC_ROUTES):
             return await call_next(request)
         
@@ -73,6 +79,9 @@ class CSRFMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> Response:
         path = request.url.path
         method = request.method
+        print("Method: ", method)
+
+        print("CSRF: ", request)
 
         if method in CSRF_SAFE_METHODS:
             return await call_next(request)

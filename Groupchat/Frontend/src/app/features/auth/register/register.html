@@ -26,14 +26,28 @@
 
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-5">
         <div class="space-y-2">
-          <label class="font-label-md text-label-md text-on-surface-variant ml-1" for="full-name">Full Name</label>
+          <label class="font-label-md text-label-md text-on-surface-variant ml-1" for="full-name">Display name</label>
           <div class="input-pill flex items-center px-4 py-3.5 rounded-2xl">
             <span class="material-symbols-outlined text-on-surface-variant mr-3 text-[20px]">person</span>
             <input
               id="full-name"
-              formControlName="fullName"
+              formControlName="display_name"
               type="text"
-              placeholder="Enter your full name"
+              placeholder="Enter your display Name"
+              class="bg-transparent border-none outline-none w-full text-on-surface font-body-sm placeholder:text-outline/50 p-0 focus:ring-0"
+            />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="font-label-md text-label-md text-on-surface-variant ml-1" for="full-name">Full Name</label>
+          <div class="input-pill flex items-center px-4 py-3.5 rounded-2xl">
+            <span class="material-symbols-outlined text-on-surface-variant mr-3 text-[20px]">Phone</span>
+            <input
+              id="phone"
+              formControlName="phone_number"
+              type="text"
+              placeholder="Enter your Phone Number"
               class="bg-transparent border-none outline-none w-full text-on-surface font-body-sm placeholder:text-outline/50 p-0 focus:ring-0"
             />
           </div>

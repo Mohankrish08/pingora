@@ -17,6 +17,7 @@ async def _send_sms(phone_number: str, otp: str) -> None:
 @router.post("/register", response_model=RegisterResponse, status_code=status.HTTP_201_CREATED)
 async def register(payload: RegisterRequest):
    
+
     # 1. Check if email or phone number is already registered
     existing = find_by_email_or_phone(payload.email, payload.phone_number)
 
@@ -36,13 +37,14 @@ async def register(payload: RegisterRequest):
 
     # 4. Create the user in the database
     try:
-        user = create_user(
-            email=payload.email,
-            phone_number=payload.phone_number,
-            password_hash=password_hash,
-            display_name=payload.display_name,
-            encrypted_totp_secret=encrypted_totp_secret
-        )
+        # user = create_user(
+        #     email=payload.email,
+        #     phone_number=payload.phone_number,
+        #     password_hash=password_hash,
+        #     display_name=payload.display_name,
+        #     encrypted_totp_secret=encrypted_totp_secret
+        # )
+        print("PAYLOAD: ", payload)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

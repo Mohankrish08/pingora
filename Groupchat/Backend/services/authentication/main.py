@@ -61,6 +61,13 @@ def create_app() -> FastAPI:
         lifespan=lifespan
     )
 
+    print("SETTINGS: ", settings.allowed_origins_list)
+
+
+    app.add_middleware(JWTAuthMiddleware)
+    app.add_middleware(CSRFMiddleware)
+    app.add_middleware(RateLimitMiddleware)
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.allowed_origins_list,
@@ -69,10 +76,6 @@ def create_app() -> FastAPI:
         allow_headers=["*","X-CSRF-Token"],
         expose_headers=["X-CSRF-Token"]
     )
-
-    app.add_middleware(JWTAuthMiddleware)
-    app.add_middleware(CSRFMiddleware)
-    app.add_middleware(RateLimitMiddleware)
 
     app.include_router(auth_router, prefix="/auth")
 

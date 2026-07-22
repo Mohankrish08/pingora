@@ -9,7 +9,7 @@ def _utcnow() -> datetime:
     return datetime.now(timezone.utc)
 
 # ---- Access Token ----
-def create_acces_token(
+def create_access_token(
         user_id: str, 
         email: str,
         phone: str,
@@ -34,7 +34,7 @@ def create_acces_token(
         "type": "access"
     }
 
-    if settings.encrpt_jwt_payload: 
+    if settings.encrypt_jwt_payload: 
         outer_claims = {
             "enc": encryp_payload(inner_claims),
             "jti": jti,

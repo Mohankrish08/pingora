@@ -6,8 +6,22 @@ def find_by_email_or_phone(email: str, phone_number: str) -> Optional[dict]:
 
     result = (
         client.table("users")
-        .select("id, email, phone_number")
+        .select("id, email, phone_number, password_hash, display_name, totp_secret")
         .or_(f"email.eq.{email}, phone_number.eq.{phone_number}")
+        .limit(1)
+        .execute()
+    )
+
+    rows = result.data or []
+    return rows[0] if rows else None
+
+def find_by_id(user_id: str):
+    client = get_supabase_client()
+
+    result = (
+        client.table("users")
+        .select("id, email, phone_number, password_hash, display_name, totp_secret")
+        .or_(f"id.eq.{user_id}")
         .limit(1)
         .execute()
     )

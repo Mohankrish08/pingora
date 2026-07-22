@@ -24,7 +24,7 @@ def _load_key():
             )
         with open(settings.rsa_public_key_path, "rb") as f:
             _rsa_public_key = serialization.load_pem_public_key(
-                f.read(), password=None, backend=default_backend()
+                f.read(), backend=default_backend()
             )
 
 # RSA-OAEP + AES-256-GCM Hybrid Encrypt
@@ -35,7 +35,7 @@ def encryp_payload(payload: dict) -> str:
     """
     _load_key()
      
-    raw = json.dumps(payload, seperators=(",", ":")).encode()
+    raw = json.dumps(payload, separators=(",", ":")).encode()
 
     # AES-GCM encrypt
     aes_key = os.urandom(AES_KEY_SIZE)

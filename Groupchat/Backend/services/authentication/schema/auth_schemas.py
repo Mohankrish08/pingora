@@ -1,5 +1,5 @@
 import re
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 
 class RegisterRequest(BaseModel):
     email: EmailStr
@@ -43,3 +43,26 @@ class RegisterResponse(BaseModel):
     email_verified: bool
     phone_verified: bool
     message: str = "Account created. Scan the QR code to set up your authenticator app and verify the OTP sent to your phone."
+
+class LoginRequest(BaseModel):
+    email: EmailStr
+    password: str
+
+class LoginResponse(BaseModel):
+    user_id: str
+    email: str
+    display_name: str
+    requires_totp: bool
+    access_token: str | None = None
+    token_type: str = "Bearer"
+    message: str = "Login Successful"
+
+class TOTPVerifyRequest(BaseModel):
+    user_id: str
+    totp_code: str = Field(min_length=6, max_length=6)
+
+
+class TOTPVerifyResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    message: str = "TOTP verified. Login complete."

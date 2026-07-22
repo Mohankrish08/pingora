@@ -20,6 +20,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 7
+    encrypt_jwt_payload: bool = True
 
     rsa_private_key_path: str = "./keys/private.pem"
     rsa_public_key_path: str = "./keys/public.pem"
